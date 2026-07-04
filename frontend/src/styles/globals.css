@@ -1,0 +1,503 @@
+/* ==========================================
+   Global styles mejorados
+   Variables, reset accesible, tipografía y utilidades
+========================================== */
+
+:root{
+  --bg: #f7f9fc;
+  --surface: #ffffff;
+  --muted: #6b7280;
+  --text: #111827;
+  --primary: #0d6efd;
+  --primary-600: #0b5ed7;
+  --success: #198754;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --glass: rgba(255,255,255,0.6);
+  --radius: clamp(10px, 1.2vw, 18px);
+  --radius-lg: calc(var(--radius) * 1.5);
+  --radius-pill: 9999px;
+  --space-sm: .5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --shadow-sm: 0 6px 18px rgba(15,23,42,0.06);
+  --shadow-md: 0 18px 40px rgba(15,23,42,0.12);
+}
+
+/* Reset moderno y accesible */
+*, *::before, *::after{
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+}
+html{
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.45;
+}
+
+a{ color: var(--primary); text-decoration:none; }
+a:hover{ text-decoration:underline; }
+
+img{ max-width:100%; display:block; }
+button{ font: inherit; cursor:pointer; }
+input, textarea, button, select{ font: inherit; }
+
+/* Motion preferences */
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; animation: none !important; }
+}
+
+/* Tipografía */
+h1, h2, h3, h4, h5{ color: var(--text); margin: 0 0 .6rem; font-weight:600; }
+h1{ font-size:2rem; text-align:center; color:var(--primary); margin-top:1.5rem; }
+h2{ font-size:1.25rem; }
+p{ margin:0 0 1rem; color:var(--muted); }
+
+/* Contenedor central */
+.container{
+  width: 90%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Navbar */
+.navbar{
+  background: linear-gradient(90deg,var(--primary), var(--primary-600));
+  color: white;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding: .9rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  position: sticky; top: 0; z-index: 1000;
+}
+.navbar h2{ margin: 0; color: white; font-size:1.1rem; }
+.navbar .nav-actions{ display:flex; gap: .75rem; align-items:center; }
+.navbar a{ color: white; font-weight:600; }
+
+/* Botones reutilizables */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  gap:.5rem; padding:clamp(.5rem,.9vw,.9rem) clamp(.8rem,2vw,.9rem);
+  border-radius: var(--radius-pill); border: none;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.btn:hover{ transform: translateY(-2px); }
+.btn-primary{ background:var(--primary); color:#fff; }
+.btn-primary:hover{ background:var(--primary-600); }
+.btn-danger{ background:var(--danger); color:#fff; }
+.btn-warning{ background:var(--warning); color:#111; }
+.btn-outline{ background:transparent; border:1px solid rgba(0,0,0,0.06); }
+
+/* Formularios */
+.login-container{
+  min-height: 80vh; display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(135deg,#2563eb,#1d4ed8);
+  padding: 2rem;
+}
+.login-card{
+  width:100%; max-width:420px; background:var(--surface); padding:clamp(1.5rem,2.2vw,2.2rem);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+}
+.login-card h2{ text-align:center; color:#2563eb; margin-bottom:.4rem; }
+.login-card p{ text-align:center; color:var(--muted); margin-bottom:1.2rem; }
+form{ width:100%; }
+label{ display:block; margin-bottom:.35rem; font-weight:600; color:var(--text); }
+input[type="text"], input[type="email"], input[type="password"], textarea, select{
+  width:100%; padding:clamp(.6rem,.9vw,.9rem); border-radius:var(--radius); border:1px solid #e6e9ef; margin-bottom:var(--space-md);
+  background: #fff; color:var(--text);
+}
+input:focus, textarea:focus{ outline: none; box-shadow: 0 6px 20px rgba(37,99,235,.12); border-color: #2563eb; }
+
+/* Productos y tarjetas */
+.contenedor-productos{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.25rem;
+  margin: 0 auto; padding: 1.5rem; max-width:1400px;
+}
+.card{
+  background:var(--surface); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm);
+  transition: transform .25s ease, box-shadow .25s ease; display:flex; flex-direction:column;
+}
+.card:hover{ transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.card img{ width:100%; height:220px; object-fit:cover; display:block; }
+.card h2{ padding: .9rem .9rem .4rem; font-size:1.05rem; }
+.card p{ padding: 0 .9rem; color:var(--muted); flex:1; }
+.card h3{ padding: .9rem; color:var(--success); font-size:1.05rem; font-weight:700; }
+.card .card-actions{ display:flex; gap:clamp(.4rem,.8vw,.6rem); padding: clamp(.6rem,.9vw,.8rem); }
+.card button{ margin:0; padding:clamp(.45rem,.8vw,.6rem) clamp(.6rem,1.4vw,.8rem); border-radius: calc(var(--radius) * 0.9); font-weight:700; }
+
+/* Botones admin */
+.admin-buttons{ display:flex; gap:var(--space-sm); padding:var(--space-sm); }
+.admin-buttons button{ flex:1; border-radius: calc(var(--radius) * 0.9); }
+.admin-buttons button:first-child{ background:var(--warning); color:#111; }
+.admin-buttons button:first-child:hover{ filter:brightness(.95); }
+.admin-buttons button:last-child{ background:var(--danger); color:#fff; }
+
+/* Carrito */
+.item-carrito{ display:flex; align-items:center; justify-content:space-between; background:var(--surface);
+  padding:clamp(.8rem,1.2vw,1.1rem); margin-bottom:var(--space-md); border-radius:var(--radius); box-shadow:var(--shadow-sm);
+}
+.item-carrito img{ width:110px; height:110px; object-fit:cover; border-radius:calc(var(--radius) * 0.8); }
+.item-info{ flex:1; margin-left:1rem; }
+.item-info h2{ margin-bottom:.4rem; font-size:1rem; }
+.item-info p{ margin: .25rem 0; color:var(--muted); }
+.item-controles{ display:flex; align-items:center; gap:.6rem; }
+
+/* Utilidades */
+.flex-center{ display:flex; align-items:center; justify-content:center; }
+.visually-hidden{ position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap; }
+.badge{ display:inline-block; padding:.25rem .5rem; border-radius:999px; background:#eef2ff; color:var(--primary); font-weight:700; }
+
+/* Responsive tweaks */
+@media (max-width: 640px){
+  .navbar{ padding:.6rem .9rem; }
+  .card img{ height:180px; }
+  .container{ padding:1rem 0; }
+}
+
+/* Small helpers for consistent spacing */
+.mb-1{ margin-bottom:.5rem; }
+.mb-2{ margin-bottom:1rem; }
+.mt-1{ margin-top:.5rem; }
+
+/* Fin de globals.css */
+
+/* ==========================
+   BOTONES DEL CARRITO
+========================== */
+
+.carrito-container .btn{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:.5rem;
+
+    padding:.6rem 1rem;
+
+    border:none;
+
+    border-radius:var(--radius);
+
+    font-weight:600;
+
+    transition:all .2s ease;
+
+    cursor:pointer;
+
+}
+
+.carrito-container .btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.carrito-container .btn:active{
+
+    transform:scale(.96);
+
+}
+
+/* Cantidad */
+
+.btn-cantidad{
+
+    width:38px;
+
+    height:38px;
+
+    padding:0;
+
+    border-radius:50%;
+
+    background:var(--primary);
+
+    color:#fff;
+
+    font-size:1.1rem;
+
+}
+
+.btn-cantidad:hover{
+
+    background:var(--primary-600);
+
+}
+
+/* Eliminar */
+
+.btn-eliminar{
+
+    background:var(--danger);
+
+    color:white;
+
+}
+
+.btn-eliminar:hover{
+
+    filter:brightness(.95);
+
+}
+
+/* Vaciar */
+
+.btn-vaciar{
+
+    background:#6c757d;
+
+    color:white;
+
+}
+
+.btn-vaciar:hover{
+
+    background:#5c636a;
+
+}
+
+/* Comprar */
+
+.btn-comprar{
+
+    background:var(--primary);
+    color:#fff;
+
+}
+
+.btn-comprar:hover{
+
+    filter:brightness(.95);
+
+}
+/* ==========================
+   NAVBAR
+========================== */
+
+.navbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px 35px;
+
+    background:linear-gradient(90deg,#0d6efd,#2563eb);
+
+    color:white;
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.navbar-logo h2{
+
+    color:white;
+
+    margin:0;
+
+}
+
+.navbar-links{
+
+    display:flex;
+
+    gap:25px;
+
+}
+
+.navbar-user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.navbar a{
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    padding:10px 18px;
+
+    border-radius:var(--radius-pill);
+
+    transition:all .25s ease;
+
+}
+
+.navbar a:hover{
+
+    background:rgba(255,255,255,.18);
+
+    transform:translateY(-2px);
+
+    box-shadow:0 5px 12px rgba(0,0,0,.15);
+
+}
+
+.navbar a:active{
+
+    transform:scale(.96);
+
+}
+
+.navbar-user span{
+
+    font-weight:600;
+
+}
+.navbar-user a{
+
+    background:rgba(255,255,255,.15);
+
+    padding:10px 18px;
+
+    border-radius:var(--radius-pill);
+
+}
+
+.navbar-user a:hover{
+
+    background:white;
+
+    color:var(--primary);
+
+}
+/* ==========================
+   LOGIN Y REGISTRO
+========================== */
+
+.login-container{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:30px;
+
+    background:linear-gradient(135deg,#2563eb,#1e40af);
+
+}
+
+.login-card{
+
+    width:100%;
+
+    max-width:430px;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+
+}
+
+.login-card h2{
+
+    text-align:center;
+
+    font-size:2rem;
+
+    color:var(--primary);
+
+    margin-bottom:10px;
+
+}
+
+.login-card p{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+    color:var(--muted);
+
+}
+.login-card input{
+
+    width:100%;
+
+    padding:14px 18px;
+
+    margin-bottom:18px;
+
+    border:1px solid #dcdfe5;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    transition:.25s;
+
+}
+
+.login-card input:focus{
+
+    outline:none;
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 4px rgba(13,110,253,.15);
+
+
+
+}
+.login-card button{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:linear-gradient(90deg,#0d6efd,#2563eb);
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.login-card button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 12px 25px rgba(37,99,235,.30);
+
+}
