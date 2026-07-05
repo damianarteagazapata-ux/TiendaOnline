@@ -1,25 +1,42 @@
-# TiendaOnline
+# 🛒 TiendaOnline
 
-Proyecto de tienda online con backend en Node.js/Express y frontend en React + Vite.
+Proyecto de tienda online desarrollado con **Node.js + Express**, **React + Vite** y **MySQL/MariaDB**.
 
-///////////////REEMPLAZA EL ARCHIVO .env 
-## Requisitos
+---
 
-- Node.js 18+ instalado
-- npm instalado
-- MySQL/MariaDB
+# Características
 
-## Base de datos
+- Registro de usuarios.
+- Inicio de sesión con JWT.
+- Gestión de productos.
+- Carrito de compras persistente por usuario.
+- Creación de pedidos.
+- Administración de pedidos.
+- Cambio de estados de pedidos.
+- Dashboard administrativo.
+- Gestión de roles (Administrador / Cliente).
 
-1. Conecta a MySQL.(o xampp con phpmyadmin)
-2. Crea la base de datos:
+---
+
+# Requisitos
+
+- Node.js 18 o superior
+- npm
+- MySQL o MariaDB
+- XAMPP (Opcional)
+
+---
+
+# Base de datos
+
+## 1. Crear la base de datos
 
 ```sql
 CREATE DATABASE tienda_online CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE tienda_online;
 ```
 
-3. Crea las tablas necesarias:
+## 2. Crear las tablas
 
 ```sql
 CREATE TABLE usuarios (
@@ -39,51 +56,140 @@ CREATE TABLE productos (
   descripcion TEXT DEFAULT NULL,
   precio DECIMAL(10,2) NOT NULL,
   imagen VARCHAR(255) DEFAULT NULL,
-  stock INT(11) DEFAULT 0
+  stock INT DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE pedidos (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  usuario_id INT(11) DEFAULT NULL,
+  usuario_id INT DEFAULT NULL,
   total DECIMAL(10,2) DEFAULT NULL,
-  estado ENUM('Pendiente','Aprobado','Rechazado','Enviado','Entregado') DEFAULT 'Pendiente',
-  fecha TIMESTAMP NOT NULL DEFAULT current_timestamp()
+  estado ENUM(
+      'Pendiente',
+      'Aprobado',
+      'Rechazado',
+      'Enviado',
+      'Entregado'
+  ) DEFAULT 'Pendiente',
+  fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE pedido_detalle (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  pedido_id INT(11) DEFAULT NULL,
-  producto_id INT(11) DEFAULT NULL,
-  cantidad INT(11) DEFAULT NULL,
+  pedido_id INT DEFAULT NULL,
+  producto_id INT DEFAULT NULL,
+  cantidad INT DEFAULT NULL,
   precio DECIMAL(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE pedidos
-  ADD KEY usuario_id (usuario_id);
+ADD KEY usuario_id(usuario_id);
 
 ALTER TABLE pedido_detalle
-  ADD KEY pedido_id (pedido_id),
-  ADD KEY producto_id (producto_id);
+ADD KEY pedido_id(pedido_id),
+ADD KEY producto_id(producto_id);
 
 ALTER TABLE pedidos
-  ADD CONSTRAINT pedidos_ibfk_1 FOREIGN KEY (usuario_id) REFERENCES usuarios(id);
+ADD CONSTRAINT pedidos_ibfk_1
+FOREIGN KEY(usuario_id)
+REFERENCES usuarios(id);
 
 ALTER TABLE pedido_detalle
-  ADD CONSTRAINT pedido_detalle_ibfk_1 FOREIGN KEY (pedido_id) REFERENCES pedidos(id),
-  ADD CONSTRAINT pedido_detalle_ibfk_2 FOREIGN KEY (producto_id) REFERENCES productos(id);
+ADD CONSTRAINT pedido_detalle_ibfk_1
+FOREIGN KEY(pedido_id)
+REFERENCES pedidos(id);
+
+ALTER TABLE pedido_detalle
+ADD CONSTRAINT pedido_detalle_ibfk_2
+FOREIGN KEY(producto_id)
+REFERENCES productos(id);
 ```
 
-## Configuración del backend
+---
 
-1. Abre una terminal en `backend/`.
-2. Instala dependencias:
+## 3. Insertar datos de prueba
+
+```sql
+INSERT INTO productos
+(id,nombre,descripcion,precio,imagen,stock)
+VALUES
+
+(10,
+'cable inalambrico',
+'24 pulgadas Full HD',
+850000.00,
+'https://teclado.pro/wp-content/uploads/2024/06/teclado-para-pc-2.jpg',
+15),
+
+(11,
+'Monitor Samsung',
+'Bluetooth Noise Cancelling',
+250000.00,
+'https://www.quietpc.com/images/products/logitech-b100-large.jpg',
+12);
+
+INSERT INTO usuarios
+(id,nombre,email,password,telefono,direccion,rol,created_at)
+VALUES
+
+(
+9,
+'admin',
+'admin@gmail.com',
+'$2b$10$TVX/uDO7dmIiAfStt25cZeNT5UemJlQiNNB7XEtUJgFmDfKgQeBWC',
+'3042035322',
+'ddd',
+'admin',
+CURRENT_TIMESTAMP
+),
+
+(
+10,
+'cliente',
+'cliente@gmail.com',
+'$2b$10$PY/fBXD754NNiQYtTCs5p.i7Pxsz2TshGRdEKkMhn.vGTCtf8QpPO',
+'3042035322',
+'ddd',
+'cliente',
+CURRENT_TIMESTAMP
+);
+
+ALTER TABLE productos
+AUTO_INCREMENT = 12;
+
+ALTER TABLE usuarios
+AUTO_INCREMENT = 11;
+```
+
+---
+
+# Usuarios de prueba
+
+Después de ejecutar el SQL podrás iniciar sesión con:
+
+| Rol | Correo | Contraseña |
+|------|---------|------------|
+| Administrador | admin@gmail.com | **123** |
+| Cliente | cliente@gmail.com | **123** |
+
+> **Nota:** Las contraseñas almacenadas en la base de datos están cifradas con **bcrypt**. La contraseña real para ambos usuarios es **123**.
+
+---
+
+# Configuración del Backend
+
+Entrar a la carpeta:
 
 ```bash
 cd backend
+```
+
+Instalar dependencias:
+
+```bash
 npm install
 ```
 
-3. Crea un archivo `.env` con estos valores:
+Crear (o reemplazar) el archivo `.env` dentro de la carpeta **backend**:
 
 ```env
 PORT=3000
@@ -94,54 +200,119 @@ DB_NAME=tienda_online
 JWT_SECRET=una_clave_secreta_fuerte
 ```
 
-4. Inicia el servidor:
+Iniciar el servidor:
 
 ```bash
 npm run dev
 ```
 
-> El backend quedará disponible en `http://localhost:3000`.
+Servidor:
 
-## Configuración del frontend
+```
+http://localhost:3000
+```
 
-1. Abre otra terminal en `frontend/`.
-2. Instala dependencias:
+---
+
+# Configuración del Frontend
+
+Entrar a la carpeta:
 
 ```bash
 cd frontend
+```
+
+Instalar dependencias:
+
+```bash
 npm install
 ```
 
-3. Inicia la aplicación React:
+Ejecutar:
 
 ```bash
 npm run dev
 ```
 
-> El frontend usará `http://localhost:3000` como base para la API.
+La aplicación quedará disponible en:
 
-## Endpoints principales
+```
+http://localhost:5173
+```
 
-### Autenticación
+---
 
-- `POST /auth/register` — registrar usuario
-- `POST /auth/login` — iniciar sesión
+# Endpoints principales
 
-### Productos
+## Autenticación
 
-- `GET /productos` — listar productos
-- `POST /productos` — crear producto
-- `PUT /productos/:id` — actualizar producto (requiere token + admin)
-- `DELETE /productos/:id` — eliminar producto (requiere token + admin)
+| Método | Endpoint | Descripción |
+|---------|----------|-------------|
+| POST | /auth/register | Registrar usuario |
+| POST | /auth/login | Iniciar sesión |
 
-### Pedidos
+---
 
-- `POST /pedidos` — crear pedido (requiere token)
-- `GET /pedidos` — obtener pedidos del usuario o todos si es admin
-- `PUT /pedidos/:id` — actualizar estado (requiere admin)
-- `GET /pedidos/estadisticas` — estadísticas de pedidos (requiere admin)
+## Productos
 
-## Notas
+| Método | Endpoint | Descripción |
+|---------|----------|-------------|
+| GET | /productos | Obtener productos |
+| POST | /productos | Crear producto (Admin) |
+| PUT | /productos/:id | Actualizar producto (Admin) |
+| DELETE | /productos/:id | Eliminar producto (Admin) |
 
-- El frontend guarda el token de usuario en `localStorage` y lo envía en el header `Authorization: Bearer <token>`.
-- Si actualizas credenciales de MySQL, ajusta el archivo `.env` del backend.
+---
+
+## Pedidos
+
+| Método | Endpoint | Descripción |
+|---------|----------|-------------|
+| POST | /pedidos | Crear pedido |
+| GET | /pedidos | Obtener pedidos |
+| PUT | /pedidos/:id | Cambiar estado (Admin) |
+| GET | /pedidos/estadisticas | Dashboard (Admin) |
+
+---
+
+## Usuarios
+
+| Método | Endpoint | Descripción |
+|---------|----------|-------------|
+| GET | /usuarios | Listar usuarios (Admin) |
+| PUT | /usuarios/:id/rol | Cambiar rol de usuario (Admin) |
+
+---
+
+# Tecnologías utilizadas
+
+### Backend
+
+- Node.js
+- Express
+- MySQL
+- JWT
+- bcrypt
+- dotenv
+- cors
+
+### Frontend
+
+- React
+- React Router DOM
+- Axios
+- CSS
+
+---
+
+# Notas
+
+- El token JWT se almacena en **localStorage**.
+- Todas las peticiones protegidas utilizan el encabezado:
+
+```http
+Authorization: Bearer <token>
+```
+
+- Los usuarios de prueba ya están incluidos en el SQL.
+- El administrador puede crear, editar y eliminar productos, gestionar pedidos y modificar los roles de los usuarios.
