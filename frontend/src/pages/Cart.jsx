@@ -1,9 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
 import api from "../api/api";
+import Spinner from "../components/Spinner";
 function Cart() {
-    const navigate = useNavigate();
 
 const {
     carrito,
@@ -12,6 +11,7 @@ const {
     eliminarProducto,
     vaciarCarrito
 } = useContext(CartContext);
+    const [loading, setLoading] = useState(false);
 
     const total = carrito.reduce(
 
@@ -29,33 +29,22 @@ const finalizarCompra = async () => {
         return;
     }
 
+    setLoading(true);
+
     try {
-
         const pedido = {
-
             total,
-
             productos: carrito.map(item => ({
-
                 id: item.id,
-
                 cantidad: item.cantidad,
-
                 precio: item.precio
-
             }))
-
         };
 
         const respuesta = await api.post("/pedidos", pedido);
-
         alert(respuesta.data.mensaje);
-
         vaciarCarrito();
-
-
     } catch (error) {
-
         console.log(error);
 
         if (error.response?.data?.mensaje) {
@@ -63,9 +52,9 @@ const finalizarCompra = async () => {
         } else {
             alert("Error al crear el pedido");
         }
-
+    } finally {
+        setLoading(false);
     }
-
 };
 
     return (
@@ -175,9 +164,9 @@ const finalizarCompra = async () => {
             }}
             className="btn btn-comprar"
             onClick={finalizarCompra}
-            disabled={carrito.length === 0}
+            disabled={carrito.length === 0 || loading}
             >
-                Finalizar compra
+                {loading ? <Spinner size="sm" label="" inline /> : "Finalizar compra"}
 </button>
         </div>
 
