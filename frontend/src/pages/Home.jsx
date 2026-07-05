@@ -25,7 +25,7 @@ function Home() {
 
         console.log(error);
 
-        alert("Error al eliminar");
+        alert(error.response?.data?.mensaje || "El producto esta asociado a un pedido, no se puede eliminar");
 
     }
 

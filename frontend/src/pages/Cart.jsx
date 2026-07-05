@@ -24,6 +24,11 @@ const {
     );
 const finalizarCompra = async () => {
 
+    if (carrito.length === 0) {
+        alert("No se puede finalizar la compra con el carrito vacío.");
+        return;
+    }
+
     try {
 
         const pedido = {
@@ -48,13 +53,16 @@ const finalizarCompra = async () => {
 
         vaciarCarrito();
 
-        navigate("/");
 
     } catch (error) {
 
         console.log(error);
 
-        alert("Error al crear el pedido");
+        if (error.response?.data?.mensaje) {
+            alert(error.response.data.mensaje);
+        } else {
+            alert("Error al crear el pedido");
+        }
 
     }
 
@@ -149,19 +157,27 @@ const finalizarCompra = async () => {
 
             <button
             style={{
-                backgroundColor: "#007bff",
+                backgroundColor: carrito.length === 0 ? "#6c757d" : "#007bff",
                 color: "#fff",
                 border: "none",
                 padding: "10px 20px",
                 borderRadius: "5px",
-                cursor: "pointer",
+                cursor: carrito.length === 0 ? "not-allowed" : "pointer",
                 transition: "background-color 0.3s ease"
             }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = "#0056b3"}
-            onMouseLeave={(e) => e.target.style.backgroundColor = "#007bff"}
-            className="btn btn-comprar" onClick={finalizarCompra}>
-                
-    Finalizar compra
+            onMouseEnter={(e) => {
+                if (carrito.length === 0) return;
+                e.target.style.backgroundColor = "#0056b3";
+            }}
+            onMouseLeave={(e) => {
+                if (carrito.length === 0) return;
+                e.target.style.backgroundColor = "#007bff";
+            }}
+            className="btn btn-comprar"
+            onClick={finalizarCompra}
+            disabled={carrito.length === 0}
+            >
+                Finalizar compra
 </button>
         </div>
 

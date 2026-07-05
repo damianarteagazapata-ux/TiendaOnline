@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../api/api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Register() {
     const navigate = useNavigate();
@@ -110,9 +110,9 @@ function Register() {
                 <button type="submit">
                     Registrarse
                 </button>
+        <Link to="/" className="text-center mt-3">¿Ya tienes una cuenta? Inicia sesión</Link>
 
             </form>
-
         </div>
 
     );

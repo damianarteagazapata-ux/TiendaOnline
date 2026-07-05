@@ -38,9 +38,14 @@ html{
 }
 body{
   margin: 0;
+  min-height: 100vh;
   background: var(--bg);
   color: var(--text);
   line-height: 1.45;
+}
+
+#root {
+  min-height: 100vh;
 }
 
 a{ color: var(--primary); text-decoration:none; }
@@ -69,22 +74,6 @@ p{ margin:0 0 1rem; color:var(--muted); }
   padding: 2rem 0;
 }
 
-/* Navbar */
-.navbar{
-  background: linear-gradient(90deg,var(--primary), var(--primary-600));
-  color: white;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:1rem;
-  padding: .9rem 1.5rem;
-  box-shadow: var(--shadow-sm);
-  position: sticky; top: 0; z-index: 1000;
-}
-.navbar h2{ margin: 0; color: white; font-size:1.1rem; }
-.navbar .nav-actions{ display:flex; gap: .75rem; align-items:center; }
-.navbar a{ color: white; font-weight:600; }
-
 /* Botones reutilizables */
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
@@ -98,26 +87,6 @@ p{ margin:0 0 1rem; color:var(--muted); }
 .btn-danger{ background:var(--danger); color:#fff; }
 .btn-warning{ background:var(--warning); color:#111; }
 .btn-outline{ background:transparent; border:1px solid rgba(0,0,0,0.06); }
-
-/* Formularios */
-.login-container{
-  min-height: 80vh; display:flex; align-items:center; justify-content:center;
-  background: linear-gradient(135deg,#2563eb,#1d4ed8);
-  padding: 2rem;
-}
-.login-card{
-  width:100%; max-width:420px; background:var(--surface); padding:clamp(1.5rem,2.2vw,2.2rem);
-  border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
-}
-.login-card h2{ text-align:center; color:#2563eb; margin-bottom:.4rem; }
-.login-card p{ text-align:center; color:var(--muted); margin-bottom:1.2rem; }
-form{ width:100%; }
-label{ display:block; margin-bottom:.35rem; font-weight:600; color:var(--text); }
-input[type="text"], input[type="email"], input[type="password"], textarea, select{
-  width:100%; padding:clamp(.6rem,.9vw,.9rem); border-radius:var(--radius); border:1px solid #e6e9ef; margin-bottom:var(--space-md);
-  background: #fff; color:var(--text);
-}
-input:focus, textarea:focus{ outline: none; box-shadow: 0 6px 20px rgba(37,99,235,.12); border-color: #2563eb; }
 
 /* Productos y tarjetas */
 .contenedor-productos{
@@ -160,9 +129,12 @@ input:focus, textarea:focus{ outline: none; box-shadow: 0 6px 20px rgba(37,99,23
 
 /* Responsive tweaks */
 @media (max-width: 640px){
-  .navbar{ padding:.6rem .9rem; }
   .card img{ height:180px; }
   .container{ padding:1rem 0; }
+  .sidebar{ width: 100%; position: relative; height: auto; box-shadow: none; }
+  .contenido{ margin-left: 0; padding: 1rem; }
+  .sidebar-menu{ flex-direction: row; flex-wrap: wrap; gap: .6rem; }
+  .sidebar-menu a{ padding: .75rem 1rem; }
 }
 
 /* Small helpers for consistent spacing */
@@ -402,7 +374,6 @@ input:focus, textarea:focus{ outline: none; box-shadow: 0 6px 20px rgba(37,99,23
 
     padding:30px;
 
-    background:linear-gradient(135deg,#2563eb,#1e40af);
 
 }
 

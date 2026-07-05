@@ -4,6 +4,12 @@ exports.crearPedido = async (req, res) => {
 
     const { total, productos } = req.body;
 
+    if (!productos || !Array.isArray(productos) || productos.length === 0) {
+        return res.status(400).json({
+            mensaje: "No se puede crear un pedido sin productos."
+        });
+    }
+
     const usuarioId = req.usuario.id;
 
     Pool.query(

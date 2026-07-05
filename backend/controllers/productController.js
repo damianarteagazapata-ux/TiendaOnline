@@ -101,6 +101,12 @@ exports.actualizarProducto = (req, res) => {
 
             if (error) {
 
+                if (error.code === "ER_ROW_IS_REFERENCED_2" || error.errno === 1451) {
+                    return res.status(400).json({
+                        mensaje: "Este producto fue asociado a un pedido"
+                    });
+                }
+
                 return res.status(500).json(error);
 
             }
@@ -130,6 +136,11 @@ exports.eliminarProducto = (req, res) => {
         (error) => {
 
             if (error) {
+                if (error.code === "ER_ROW_IS_REFERENCED_2" || error.errno === 1451) {
+                    return res.status(400).json({
+                        mensaje: "Este producto fue asociado a un pedido"
+                    });
+                }
 
                 return res.status(500).json(error);
 
