@@ -3,18 +3,18 @@ import { AuthContext } from "./AuthContext";
 
 export const CartContext = createContext();
 
+// Mantiene el carrito por usuario y lo sincroniza con el almacenamiento local.
 function CartProvider({ children }) {
 const { usuario } = useContext(AuthContext);
 
+// Usa una clave distinta por usuario para conservar el carrito entre sesiones.
 const carritoKey = usuario
     ? `carrito_${usuario.id}`
     : "carrito";
     
-console.log("Usuario:", usuario);
-console.log("Carrito Key:", carritoKey);    
-
 const [carrito, setCarrito] = useState([]);
 
+// Carga el carrito guardado cuando cambia el usuario activo.
 useEffect(() => {
 
     const carritoGuardado =
@@ -24,6 +24,7 @@ useEffect(() => {
 
 }, [carritoKey]);
 
+// Guarda el carrito en el almacenamiento local para restaurarlo después.
 useEffect(() => {
 
     localStorage.setItem(
@@ -33,6 +34,7 @@ useEffect(() => {
 
 }, [carrito, carritoKey]);
 
+    // Agrega un producto nuevo o incrementa la cantidad si ya existe.
     const agregarCarrito = (producto) => {
 
         const existe = carrito.find(

@@ -1,5 +1,6 @@
 const Pool = require("../config/db");
 
+// Crea un pedido nuevo y registra cada producto en su detalle.
 exports.crearPedido = async (req, res) => {
 
     const { total, productos } = req.body;
@@ -57,6 +58,7 @@ exports.crearPedido = async (req, res) => {
 };
 
 
+// Devuelve los pedidos del usuario actual o todos si es administrador.
 exports.obtenerPedidos = (req, res) => {
 
     let sql = "";
@@ -112,6 +114,7 @@ exports.obtenerPedidos = (req, res) => {
 
 };
 
+// Cambia el estado de un pedido ya creado.
 exports.actualizarEstado = (req, res) => {
 
     const { id } = req.params;
@@ -143,6 +146,7 @@ exports.actualizarEstado = (req, res) => {
     );
 
 };
+// Reúne métricas básicas para el panel de administración.
 exports.estadisticas = (req, res) => {
 
     const sqlPedidos = "SELECT COUNT(*) AS totalPedidos FROM pedidos";

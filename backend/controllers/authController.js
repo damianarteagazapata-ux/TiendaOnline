@@ -2,7 +2,7 @@ const db = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Registrar usuario
+// Registra un usuario nuevo y guarda la contraseña cifrada.
 exports.register = async (req, res) => {
 
     const { nombre, email, password, telefono, direccion } = req.body;
@@ -36,7 +36,7 @@ exports.register = async (req, res) => {
 };
 
 
-// Login
+// Valida las credenciales y genera un token para iniciar sesión.
 exports.login = (req, res) => {
 
     const { email, password } = req.body;

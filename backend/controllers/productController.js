@@ -4,7 +4,7 @@ const db = require("../config/db");
 
 
 
-// Obtener todos los productos
+// Devuelve el catálogo completo de productos.
 exports.obtenerProductos = (req, res) => {
 
     db.query(
@@ -21,6 +21,7 @@ exports.obtenerProductos = (req, res) => {
 
 };
 
+// Guarda un producto nuevo con los datos enviados por el administrador.
 exports.crearProducto = (req, res) => {
 
     const {
@@ -66,6 +67,7 @@ exports.crearProducto = (req, res) => {
 
 };
 
+// Actualiza los datos de un producto y maneja errores por dependencias en pedidos.
 exports.actualizarProducto = (req, res) => {
 
     const { id } = req.params;
@@ -123,6 +125,7 @@ exports.actualizarProducto = (req, res) => {
 
 };
 
+// Elimina un producto cuando no está asociado a pedidos.
 exports.eliminarProducto = (req, res) => {
 
     const { id } = req.params;
