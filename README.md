@@ -1,4 +1,5 @@
 # 🛒 TiendaOnline
+Permite el registro e inicio de sesión mediante JWT, gestión de productos, carrito de compras, creación de pedidos y un panel administrativo para administrar productos y pedidos.
 
 Proyecto de tienda online desarrollado con **Node.js + Express**, **React + Vite** y **MySQL/MariaDB**.
 
@@ -25,6 +26,14 @@ Proyecto de tienda online desarrollado con **Node.js + Express**, **React + Vite
 - MySQL o MariaDB
 - XAMPP (Opcional)
 
+---
+
+## Seguridad
+
+- Contraseñas cifradas con bcrypt.
+- Autenticación mediante JWT.
+- Middleware para verificar el token.
+- Middleware para validar el rol de administrador.
 ---
 
 # Base de datos
