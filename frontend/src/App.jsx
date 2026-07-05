@@ -10,7 +10,13 @@ function App() {
     <>
 
      <Navbar/>
-    <RouterApp/>
+
+    <main className="contenido">
+
+        <RouterApp />
+
+    </main>
+
     <Footer className="d-flex flex-column min-vh-100"/>
     </>
   )
