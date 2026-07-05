@@ -11,7 +11,8 @@ const {
     crearPedido,
     obtenerPedidos,
     actualizarEstado,
-    estadisticas
+    estadisticas,
+    obtenerProductosPedido
 } = require("../controllers/pedidoController");
 
 router.post("/", verificarToken, crearPedido);
@@ -19,6 +20,8 @@ router.post("/", verificarToken, crearPedido);
 router.get("/estadisticas", verificarToken, verificarAdmin, estadisticas);
 
 router.get("/", verificarToken, obtenerPedidos);
+
+router.get("/:id/productos", verificarToken, obtenerProductosPedido);
 
 router.put(
     "/:id",

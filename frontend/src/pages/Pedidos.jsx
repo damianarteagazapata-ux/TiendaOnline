@@ -8,6 +8,10 @@ function Pedidos() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [updatingId, setUpdatingId] = useState(null);
+    const [detallePedido, setDetallePedido] = useState(null);
+    const [detalleLoading, setDetalleLoading] = useState(false);
+    const [detalleError, setDetalleError] = useState("");
+    const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
 
     useEffect(() => {
         obtenerPedidos();
@@ -42,6 +46,29 @@ function Pedidos() {
         }
     };
 
+    const verProductos = async (pedido) => {
+        setPedidoSeleccionado(pedido.id);
+        setDetalleLoading(true);
+        setDetalleError("");
+        setDetallePedido(null);
+
+        try {
+            const respuesta = await api.get(`/pedidos/${pedido.id}/productos`);
+            setDetallePedido(respuesta.data);
+        } catch (error) {
+            console.log(error);
+            setDetalleError("No se pudieron cargar los productos de este pedido.");
+        } finally {
+            setDetalleLoading(false);
+        }
+    };
+
+    const cerrarDetalle = () => {
+        setPedidoSeleccionado(null);
+        setDetallePedido(null);
+        setDetalleError("");
+    };
+
     return (
         <div className="container py-4">
             <div className="text-center mb-4">
@@ -74,6 +101,7 @@ function Pedidos() {
                                     <th>Total</th>
                                     <th>Estado</th>
                                     <th>Fecha</th>
+                                    <th>Detalle</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,6 +125,11 @@ function Pedidos() {
                                             </select>
                                         </td>
                                         <td>{pedido.fecha}</td>
+                                        <td>
+                                            <button className="btn btn-outline" onClick={() => verProductos(pedido)}>
+                                                Ver productos
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -140,10 +173,78 @@ function Pedidos() {
                                         <option>Entregado</option>
                                     </select>
                                 </label>
+
+                                <button className="btn btn-outline w-100 mt-2" onClick={() => verProductos(pedido)}>
+                                    Ver productos
+                                </button>
                             </article>
                         ))}
                     </div>
                 </>
+            )}
+
+            {pedidoSeleccionado !== null && (
+                <div className="detalle-modal" role="dialog" aria-modal="true">
+                    <div className="detalle-modal__content" onClick={(e) => e.stopPropagation()}>
+                        <div className="detalle-modal__header">
+                            <div>
+                                <p className="pedido-card__label">Pedido #{pedidoSeleccionado}</p>
+                                <h2>Productos del pedido</h2>
+                            </div>
+                            <button className="btn btn-outline" onClick={cerrarDetalle}>
+                                Cerrar
+                            </button>
+                        </div>
+
+                        {detalleLoading ? (
+                            <Spinner label="Cargando productos..." />
+                        ) : detalleError ? (
+                            <div className="state-card error">
+                                <p>{detalleError}</p>
+                            </div>
+                        ) : detallePedido?.productos?.length === 0 ? (
+                            <div className="pedido-empty">No hay productos asociados a este pedido.</div>
+                        ) : (
+                            <>
+                                <div className="detalle-lista">
+                                    {detallePedido?.productos?.map((producto) => (
+                                        <div className="detalle-item" key={producto.id}>
+                                            {producto.imagen ? (
+                                                <img className="detalle-item__img" src={producto.imagen} alt={producto.nombre} />
+                                            ) : (
+                                                <div className="detalle-item__placeholder">Sin imagen</div>
+                                            )}
+
+                                            <div className="detalle-item__body">
+                                                <h3>{producto.nombre}</h3>
+                                                <div className="detalle-item__meta">
+                                                    <span>Precio unitario: ${producto.precioUnitario}</span>
+                                                    <span>Cantidad: {producto.cantidad}</span>
+                                                    <span>Subtotal: ${producto.subtotal}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="detalle-resumen">
+                                    <div className="detalle-resumen__row">
+                                        <span>Total de productos</span>
+                                        <strong>{detallePedido?.resumen?.totalProductos ?? 0}</strong>
+                                    </div>
+                                    <div className="detalle-resumen__row">
+                                        <span>Total de unidades</span>
+                                        <strong>{detallePedido?.resumen?.totalUnidades ?? 0}</strong>
+                                    </div>
+                                    <div className="detalle-resumen__row">
+                                        <span>Total del pedido</span>
+                                        <strong>${detallePedido?.resumen?.totalPedido ?? 0}</strong>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
             )}
         </div>
     );
