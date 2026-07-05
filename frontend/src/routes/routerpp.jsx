@@ -8,6 +8,7 @@ import AdminProductos from "../pages/AdminProductos";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import Dashboard from "../pages/Dashboard";
+import Usuarios from "../pages/Usuarios";
 function RouterApp() {
     return (
             <Routes>
@@ -48,6 +49,8 @@ function RouterApp() {
         </AdminRoute>
     }
 />
+
+<Route path="/usuarios" element={<AdminRoute><Usuarios /></AdminRoute>} />
 
 <Route
     path="/admin/productos"

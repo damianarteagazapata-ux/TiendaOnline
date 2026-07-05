@@ -13,6 +13,7 @@ const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 const verificarToken = require("./middleware/auth");
 const pedidoRoutes = require("./routes/pedidoRoutes");
+const usuariosRoutes = require("./routes/usuariosRoutes");
 
 app.get("/perfil", verificarToken, (req, res) => {
 
@@ -27,6 +28,7 @@ app.get("/perfil", verificarToken, (req, res) => {
 });
 
 
+app.use("/usuarios", usuariosRoutes);
 app.use("/auth", authRoutes);
 app.use("/productos", productRoutes);
 app.use("/pedidos", pedidoRoutes);

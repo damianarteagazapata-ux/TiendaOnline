@@ -73,6 +73,13 @@ function Navbar() {
                         )
 
                     }
+                    {
+                        usuario.rol === "admin" && (
+                            <Link to="/usuarios">
+                                Usuarios
+                            </Link>
+                        )
+                    }
 
                 </>
 
